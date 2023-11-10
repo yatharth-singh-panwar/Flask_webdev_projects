@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Impact Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="static/assets/img/favicon.png" rel="icon">
+  <link href="static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="static/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Impact
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/impact-bootstrap-business-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            background-color: #006a5d; /* Light green background */
+            color: #006600; /* Dark green text */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 50%;
+            background-color: #fff; /* White container background */
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex; /* Added */
+            flex-direction: row; /* Added */
+            align-items: center; /* Added */
+        }
+
+        .container img {
+            width: 150px; /* Adjust the width as needed */
+            margin-right: 20px; /* Add some margin to separate the image from the form */
+        }
+
+        h1 {
+            color: #006600;
+            padding: 10px 50px 10px;
+             /* Dark green header text */
+        }
+
+        label {
+            display: block;
+            color: #006600; /* Dark green label text */
+            margin-top: 10px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 1px 10px;
+            border: 1px solid #006600; /* Dark green border */
+            border-radius: 5px;
+        }
+
+        input[type="button"] {
+            background-color: #006600; /* Dark green button background */
+            color: #fff; /* White button text */
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        input[type="button"]:hover {
+            background-color: #009900; /* Light green button background on hover */
+        }
+
+        h2 {
+            color: #ffffff; /* Dark green header text */
+        }
+
+        p {
+            color: #ffffff; /* Dark green text for result and message */
+        }
+
+        #message {
+            font-weight: bold;
+        }
+        image{
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <img src="static/assets/img/Calc.png" id="image"alt="Calc man">
+        <h1 text-align: left;><b>BMI Calculator</b></h1>
+
+        <form>
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" required>
+
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" name="height" required>
+
+            <input type="button" value="Calculate BMI" onclick="calculateBMI()">
+        </form>
+    </div>
+
+    <h2>Result</h2>
+    <p>Your BMI is: <span id="result"></span></p>
+    <p id="message"></p>
+
+    <script>
+           function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // Convert height to meters
+            const bmi = weight / (height * height);
+
+            // Define acceptable BMI range
+            const lowerBMI = 18.5;
+            const upperBMI = 24.9;
+
+            // Display the result
+            document.getElementById('result').textContent = bmi.toFixed(2);
+
+            // Display message based on BMI
+            let message = "";
+            if (bmi < lowerBMI) {
+                const weightToReachLowerBMI = lowerBMI * (height * height);
+                message = `Your BMI is too low. To reach a BMI of ${lowerBMI.toFixed(.2)}`
+                message = `you need to gain approximately ${weightToReachLowerBMI - weight} kg.`;
+            } else if (bmi > upperBMI) {
+                const weightToReachUpperBMI = upperBMI * (height * height);
+                message = `Your BMI is too high. To reach a BMI of ${upperBMI.toFixed(.2)}`
+                message = `you need to lose approximately ${weight - weightToReachUpperBMI} kg.`;
+            } else {
+                message = "Your BMI is within the acceptable range.";
+            }
+
+            document.getElementById('message').textContent = message;
+        }
+    </script>
+</body>
+</html>

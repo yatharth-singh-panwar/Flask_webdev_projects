@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BMR Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            float: center;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        form {
+            background-color: #f8f8f8;
+            padding: 80px;
+            border-radius: 5px;
+            width: 80%;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="number"] {
+            width: 50%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        select {
+            background-color: #fff;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            position: absolute;
+            top: 180px;
+            right: 160px;
+            margin: 2px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #results h2 {
+            color: #333;
+        }
+
+        #results span {
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        /* Clear floating elements to prevent content overlap */
+        #results::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>BMR Calculator</h1>
+        <p>Calculate your Basal Metabolic Rate (BMR) and daily calorie needs based on your criteria.</p>
+        
+        <form id="bmrForm">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <label for="age">Age (years):</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" required>
+
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" name="height" required>
+
+            <label for="activityLevel">Activity Level:</label>
+            <select id="activityLevel" name="activityLevel">
+                <option value="1.2">Sedentary (little or no exercise)</option>
+                <option value="1.375">Lightly active (light exercise or sports 1-3 days a week)</option>
+                <option value="1.55">Moderately active (moderate exercise or sports 3-5 days a week)</option>
+                <option value="1.725">Very active (hard exercise or sports 6-7 days a week)</option>
+                <option value="1.9">Super active (very hard exercise and physical job)</option>
+            </select>
+
+            <input type="submit" value="Calculate BMR">
+        </form>
+
+        <div id="results">
+            <h2>Results</h2>
+            <p>Your Basal Metabolic Rate (BMR) is: <span id="bmrResult">0</span> calories/day</p>
+            <p>Your daily calorie needs to maintain your weight: <span id="calorieMaintain">0</span> calories/day</p>
+            <p>Calories to gain 0.25 kg/week: <span id="calorieGain025">0</span> calories/day</p>
+            <p>Calories to gain 0.5 kg/week: <span id="calorieGain05">0</span> calories/day</p>
+            <p>Calories to gain 0.75 kg/week: <span id="calorieGain075">0</span> calories/day</p>
+            <p>Calories to gain 1 kg/week: <span id="calorieGain1">0</span> calories/day</p>
+            <p>Calories to lose 0.25 kg/week: <span id="calorieLose025">0</span> calories/day</p>
+            <p>Calories to lose 0.5 kg/week: <span id="calorieLose05">0</span> calories/day</p>
+            <p>Calories to lose 0.75 kg/week: <span id="calorieLose075">0</span> calories/day</p>
+            <p>Calories to lose 1 kg/week: <span id="calorieLose1">0</span> calories/day</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bmrForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get user inputs
+            const gender = document.getElementById('gender').value;
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const activityLevel = parseFloat(document.getElementById('activityLevel').value);
+
+            // Calculate BMR
+            let bmr = 0;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else if (gender === 'female') {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            // Calculate daily calorie needs
+            const calorieMaintain = bmr * activityLevel;
+            const calorieGain025 = calorieMaintain + 250;
+            const calorieGain05 = calorieMaintain + 500;
+            const calorieGain075 = calorieMaintain + 750;
+            const calorieGain1 = calorieMaintain + 1000;
+            const calorieLose025 = calorieMaintain - 250;
+            const calorieLose05 = calorieMaintain - 500;
+            const calorieLose075 = calorieMaintain - 750;
+            const calorieLose1 = calorieMaintain - 1000;
+
+            // Update the results in the HTML
+            document.getElementById('bmrResult').textContent = bmr.toFixed(2);
+            document.getElementById('calorieMaintain').textContent = calorieMaintain.toFixed(2);
+            document.getElementById('calorieGain025').textContent = calorieGain025.toFixed(2);
+            document.getElementById('calorieGain05').textContent = calorieGain05.toFixed(2);
+            document.getElementById('calorieGain075').textContent = calorieGain075.toFixed(2);
+            document.getElementById('calorieGain1').textContent = calorieGain1.toFixed(2);
+            document.getElementById('calorieLose025').textContent = calorieLose025.toFixed(2);
+            document.getElementById('calorieLose05').textContent = calorieLose05.toFixed(2);
+            document.getElementById('calorieLose075').textContent = calorieLose075.toFixed(2);
+            document.getElementById('calorieLose1').textContent = calorieLose1.toFixed(2);
+        });
+    </script>
+</body>
+</html>
